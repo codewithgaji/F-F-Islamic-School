@@ -38,19 +38,32 @@ export async function apiGet<T>(url: string, params?: Record<string, unknown>): 
 }
 
 export async function apiPost<T, B = unknown>(url: string, body?: B): Promise<T> {
-  const { data } = await apiClient.post<T>(url, body);
+  const isFormData = body instanceof FormData;
+  const { data } = await apiClient.post<T>(url, body, {
+    headers: isFormData ? { "Content-Type": undefined } : {},
+  });
   return data;
 }
 
 export async function apiPut<T, B = unknown>(url: string, body?: B): Promise<T> {
-  const { data } = await apiClient.put<T>(url, body);
+  const isFormData = body instanceof FormData;
+  const { data } = await apiClient.put<T>(url, body, {
+    headers: isFormData ? { "Content-Type": undefined } : {},
+  });
   return data;
 }
 
+
+
 export async function apiPatch<T, B = unknown>(url: string, body?: B): Promise<T> {
-  const { data } = await apiClient.patch<T>(url, body);
+  const isFormData = body instanceof FormData;
+  const { data } = await apiClient.patch<T>(url, body, {
+    headers: isFormData ? { "Content-Type": undefined } : {},
+  });
   return data;
 }
+
+
 
 export async function apiDelete<T>(url: string): Promise<T> {
   const { data } = await apiClient.delete<T>(url);

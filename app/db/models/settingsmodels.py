@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
-from database import Base
+from db.database import Base
 from datetime import datetime
 
 
 class SiteSettingsModel(Base):
     __tablename__ = "site_settings"
     id = Column(Integer, primary_key=True, index=True)
-    school = Column(String, nullable=False)
+    school_name = Column(String, nullable=False)
     tagline = Column(String, nullable=True)
     address = Column(String, nullable=True)
     phone = Column(String, nullable=True)

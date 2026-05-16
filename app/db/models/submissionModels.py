@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, ForeignKey
-from database import Base
+from db.database import Base
 
 # This is the model for the about page content.
 

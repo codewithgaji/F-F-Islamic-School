@@ -35,20 +35,20 @@ class HeroSlideResponse(HeroSlideBase):
 # FACILITY SCHEMAS
 class FacilityCreate(BaseModel):
   icon_name: str
-  tiltle: str
+  title: str
   descriptions: str
 
 
 class FacilityUpdate(BaseModel):
   icon_name: Optional[str] = None
-  tiltle: Optional[str] = None
+  title: Optional[str] = None
   descriptions: Optional[str] = None  
 
 
 class FacilityResponse(BaseModel):
   id: int
   icon_name: str
-  tiltle: str
+  title: str
   descriptions: str
 
   model_config = ConfigDict(
@@ -74,13 +74,17 @@ class AboutUpdate(BaseModel):
   bullet_points: Optional[list] = None
 
 
-
 class AboutResponse(BaseModel):
-  id: int
+    id: int
+    title: str
+    description: str
+    main_image_url: str
+    secondary_image_url: Optional[str] = None
+    bullet_points: Optional[list] = None
 
-  model_config = ConfigDict(
-    from_attributes = True
-  )
+    model_config = ConfigDict(from_attributes=True)
+
+
 
 
 class TeacherCreate(BaseModel):

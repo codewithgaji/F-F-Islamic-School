@@ -10,24 +10,40 @@ import { Label } from "@/components/ui/label";
 import { CrudResource } from "@/components/admin/CrudResource";
 import { apiGet, apiPatch, apiPut } from "@/lib/apiClient";
 import type { Booking, ContactMessage, NewsletterSubscriber, AboutContent, SiteSettings } from "@/types/api";
-
 export const AdminHero = () => (
   <CrudResource
     title="Hero Slides"
     endpoint="/admin/hero-slides"
     fields={[
-      { key: "image", label: "Image", type: "image" },
-      { key: "caption", label: "Caption" },
-      { key: "subtitle", label: "Subtitle" },
-      { key: "display_order", label: "Order", type: "number" },
+      { key: "image",     label: "Image",          type: "image"    },
+      { key: "caption",   label: "Caption",         type: "text"     },
+      { key: "subtitle",  label: "Subtitle",        type: "textarea" },
+      { key: "order",     label: "Order",           type: "number"   },
+      { key: "is_active", label: "Active (true/false)", type: "text" },
     ]}
     columns={[
-      { key: "id", label: "#" },
-      { key: "caption", label: "Caption" },
-      { key: "subtitle", label: "Subtitle" },
+      { key: "id",        label: "#"       },
+      { key: "caption",   label: "Caption" },
+      { key: "order",     label: "Order"   },
+      {
+        key: "image_url",
+        label: "Image",
+        render: (row) =>
+          row.image_url ? (
+            <img
+              src={row.image_url as string}
+              alt=""
+              className="h-10 w-16 object-cover rounded"
+            />
+          ) : (
+            <span className="text-muted-foreground text-xs">No image</span>
+          ),
+      },
     ]}
   />
 );
+
+
 
 export const AdminClasses = () => (
   <CrudResource
@@ -113,7 +129,7 @@ export const AdminGallery = () => (
 export const AdminBlog = () => (
   <CrudResource
     title="Blog Posts"
-    endpoint="/admin/blog-posts"
+    endpoint="/admin/blog/posts"
     fields={[
       { key: "title", label: "Title" },
       { key: "excerpt", label: "Excerpt", type: "textarea" },
@@ -177,13 +193,13 @@ export const AdminSettings = () => {
   const qc = useQueryClient();
   const { data } = useQuery({
     queryKey: ["admin-settings"],
-    queryFn: () => apiGet<SiteSettings>("/admin/site-settings").catch(() => null),
+    queryFn: () => apiGet<SiteSettings>("/admin/settings").catch(() => null),
   });
   const [form, setForm] = useState<SiteSettings>({ address: "", email: "", phone: "", opening_hours: "" });
   useEffect(() => { if (data) setForm(data); }, [data]);
 
   const save = useMutation({
-    mutationFn: () => apiPut("/admin/site-settings", form),
+    mutationFn: () => apiPut("/admin/settings", form),
     onSuccess: () => { toast.success("Saved"); qc.invalidateQueries({ queryKey: ["admin-settings"] }); },
     onError: () => toast.error("Save failed (backend not ready)"),
   });
@@ -214,10 +230,10 @@ export const AdminMessages = () => {
   const qc = useQueryClient();
   const { data } = useQuery({
     queryKey: ["admin-messages"],
-    queryFn: () => apiGet<ContactMessage[]>("/admin/contact-messages").catch(() => [] as ContactMessage[]),
+    queryFn: () => apiGet<ContactMessage[]>("/admin/submissions/contact-messages").catch(() => [] as ContactMessage[]),
   });
   const toggle = useMutation({
-    mutationFn: (id: number) => apiPatch(`/admin/contact-messages/${id}/read`),
+    mutationFn: (id: number) => apiPatch(`/admin/submissions/messages/${id}/read`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-messages"] }),
   });
   return (
@@ -246,10 +262,10 @@ export const AdminBookings = () => {
   const qc = useQueryClient();
   const { data } = useQuery({
     queryKey: ["admin-bookings"],
-    queryFn: () => apiGet<Booking[]>("/admin/bookings").catch(() => [] as Booking[]),
+    queryFn: () => apiGet<Booking[]>("/admin/submissions/bookings").catch(() => [] as Booking[]),
   });
   const update = useMutation({
-    mutationFn: ({ id, status }: { id: number; status: string }) => apiPatch(`/admin/bookings/${id}/status`, { status }),
+    mutationFn: ({ id, status }: { id: number; status: string }) => apiPatch(`/admin/submissions/bookings/${id}/status`, { status }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-bookings"] }),
   });
   return (
@@ -281,7 +297,7 @@ export const AdminBookings = () => {
 export const AdminNewsletter = () => {
   const { data } = useQuery({
     queryKey: ["admin-newsletter"],
-    queryFn: () => apiGet<NewsletterSubscriber[]>("/admin/newsletter/subscribers").catch(() => [] as NewsletterSubscriber[]),
+    queryFn: () => apiGet<NewsletterSubscriber[]>("/admin/submissions/newsletter").catch(() => [] as NewsletterSubscriber[]),
   });
   return (
     <div className="space-y-4">

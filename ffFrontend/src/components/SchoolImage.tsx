@@ -1,6 +1,8 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { IslamicPattern } from "./IslamicPattern";
+import { useState, useEffect } from "react";
+
+
 
 interface Props {
   src?: string | null;
@@ -22,6 +24,13 @@ export const SchoolImage = ({
   const initial = src && src.length > 0 ? src : fallbackSrc;
   const [current, setCurrent] = useState<string | undefined>(initial || undefined);
   const [errored, setErrored] = useState(false);
+
+  useEffect(() => {
+    if (src && src.length > 0) {
+      setCurrent(src);
+      setErrored(false);
+    }
+  }, [src]);
 
   if (!current || errored) {
     return (

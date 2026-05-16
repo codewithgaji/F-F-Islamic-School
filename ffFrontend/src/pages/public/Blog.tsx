@@ -14,7 +14,7 @@ const Blog = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["blog", page],
-    queryFn: () => apiGet<BlogPost[]>("/blog-posts", { page, limit: 6 }),
+    queryFn: () => apiGet<BlogPost[]>("/blog", { page, limit: 6 }),
     staleTime: API_STALE_TIME,
   });
   const posts = !isError && data && data.length > 0 ? data : fallbackBlog;

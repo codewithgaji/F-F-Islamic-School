@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, Integer, String, Text, JSON, ForeignKey
-from database import Base
+from db.database import Base
 
 # This is for the public contents
 class HeroSlidesModel(Base):

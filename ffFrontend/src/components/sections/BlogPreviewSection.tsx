@@ -35,7 +35,7 @@ export const BlogCard = ({ p }: { p: BlogPost }) => (
 export const BlogPreviewSection = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["blog-preview"],
-    queryFn: () => apiGet<BlogPost[]>("/blog-posts", { limit: 3 }),
+    queryFn: () => apiGet<BlogPost[]>("/blog", { limit: 3 }),
     staleTime: API_STALE_TIME,
   });
   const posts = !isError && data && data.length > 0 ? data : fallbackBlog.slice(0, 3);

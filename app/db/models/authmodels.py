@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from datetime import datetime
-from database import Base
+from db.database import Base
 
 class AdminUserModel(Base):
   __tablename__="admin_user"

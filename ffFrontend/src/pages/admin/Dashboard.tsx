@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   const { data: bookings } = useQuery({
     queryKey: ["recent-bookings"],
-    queryFn: () => apiGet<Booking[]>("/admin/bookings").catch(() => [] as Booking[]),
+    queryFn: () => apiGet<Booking[]>("/admin/submissions/bookings").catch(() => [] as Booking[]),
   });
 
   return (

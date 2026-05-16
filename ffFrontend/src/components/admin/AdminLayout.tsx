@@ -22,12 +22,9 @@ const links = [
 
 export const AdminLayout = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setToken(localStorage.getItem("admin_token"));
-  }, []);
+  const [token, setToken] = useState<string | null>(
+  () => localStorage.getItem("admin_token")
+);
 
   if (!token) return <Navigate to="/admin/login" replace />;
 
