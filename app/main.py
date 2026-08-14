@@ -38,7 +38,7 @@ from routers.admin.stats import adminStatsRouter
 app = FastAPI(
     title="F&F Islamic School API ENDPOINTS",
     lifespan=lifespan,
-    redirect_slashes=False
+    # redirect_slashes=False
 )
 
 # origins_raw = os.getenv("ALLOWED_ORIGINS", "http://localhost:8080")

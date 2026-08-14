@@ -14,7 +14,7 @@ interface Props {
   showCta?: boolean;
 }
 
-export const AboutSection = ({ endpoint = "/about-preview", showCta = true }: Props) => {
+export const AboutSection = ({ endpoint = "/about", showCta = true }: Props) => {
   const { data, isError } = useQuery({
     queryKey: ["about", endpoint],
     queryFn: () => apiGet<AboutContent>(endpoint),

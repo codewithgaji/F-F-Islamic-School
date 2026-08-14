@@ -7,7 +7,7 @@ from services.about_service import get_about
 AboutRouter = APIRouter()
 
 
-@AboutRouter.get("/", response_model=AboutResponse)
+@AboutRouter.get("", response_model=AboutResponse)
 def get_about_content(db: Session = Depends(get_db)):
     about = get_about(db)
     if not about:

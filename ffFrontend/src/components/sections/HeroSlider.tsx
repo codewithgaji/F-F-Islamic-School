@@ -45,7 +45,7 @@ export const HeroSlider = () => {
           ) : (
             <IslamicPattern variant={index % 2 === 0 ? "star" : "crescent"} />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
@@ -59,14 +59,14 @@ export const HeroSlider = () => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="max-w-2xl text-primary-foreground"
           >
-            <span className="inline-block uppercase tracking-[0.25em] text-xs font-semibold text-accent mb-4">
+            <span className="inline-block uppercase tracking-[0.25em] text-xs font-semibold text-white/70 mb-4">
               Welcome to F&amp;F Islamic Super Kiddies
             </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-4">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-4 text-white">
               {slide.caption}
             </h1>
-            <p className="text-base md:text-lg text-primary-foreground/85 max-w-xl mb-8">{slide.subtitle}</p>
-            <div className="flex flex-wrap gap-3">
+            <p className="text-base md:text-lg text-white/90 max-w-xl mb-8">{slide.subtitle}</p>
+            <div className="flex flex-row flex-nowrap gap-3">
               <Button asChild size="lg" className="rounded-full px-8">
                 <Link to="/about">Learn More</Link>
               </Button>

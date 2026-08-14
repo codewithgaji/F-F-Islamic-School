@@ -8,7 +8,7 @@ from core.security.dependencies import get_current_admin
 adminAboutRouter = APIRouter()
 
 
-@adminAboutRouter.get("/", response_model=AboutResponse)
+@adminAboutRouter.get("", response_model=AboutResponse)
 def get_about_content(
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
@@ -19,7 +19,7 @@ def get_about_content(
     return about
 
 
-@adminAboutRouter.post("/", response_model=AboutResponse, status_code=201)
+@adminAboutRouter.post("", response_model=AboutResponse, status_code=201)
 def create_about_content(
     data: AboutCreate,
     db: Session = Depends(get_db),
@@ -34,7 +34,7 @@ def create_about_content(
     return create_about(db, data)
 
 
-@adminAboutRouter.put("/", response_model=AboutResponse)
+@adminAboutRouter.put("", response_model=AboutResponse)
 def update_about_content(
     data: AboutUpdate,
     db: Session = Depends(get_db),

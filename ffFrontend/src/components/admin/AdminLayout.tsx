@@ -25,6 +25,8 @@ export const AdminLayout = () => {
   const [token, setToken] = useState<string | null>(
   () => localStorage.getItem("admin_token")
 );
+  const [open, setOpen] = useState(false);
+
 
   if (!token) return <Navigate to="/admin/login" replace />;
 
@@ -35,10 +37,24 @@ export const AdminLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-secondary">
+  {open && (
+    <div
+      className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+      onClick={() => setOpen(false)}
+    />
+  )}
       <aside className={cn("fixed lg:static inset-y-0 left-0 z-40 w-64 bg-footer text-footer-foreground transform transition-transform lg:translate-x-0", open ? "translate-x-0" : "-translate-x-full")}>
-        <div className="h-16 px-5 flex items-center gap-2 border-b border-footer-foreground/10">
-          <span className="grid place-items-center w-8 h-8 rounded-full bg-primary text-primary-foreground"><Star className="w-4 h-4" /></span>
-          <span className="font-display font-bold">F&amp;F Admin</span>
+        <div className="h-16 px-5 flex items-center justify-between border-b border-footer-foreground/10">
+          <div className="flex items-center gap-2">
+            <span className="grid place-items-center w-8 h-8 rounded-full bg-primary text-primary-foreground"><Star className="w-4 h-4" /></span>
+            <span className="font-display font-bold">F&amp;F Admin</span>
+          </div>
+          <button
+            className="lg:hidden p-1 rounded hover:bg-footer-foreground/10 text-footer-foreground"
+            onClick={() => setOpen(false)}
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
         <nav className="p-3 space-y-1 overflow-y-auto h-[calc(100vh-4rem)]">
           {links.map((l) => (
