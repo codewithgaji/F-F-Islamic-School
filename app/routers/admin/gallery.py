@@ -57,7 +57,7 @@ def remove_category(
 
 # --- IMAGE ROUTES ---
 
-@adminGalleryRouter.get("/", response_model=list[GalleryResponse])
+@adminGalleryRouter.get("", response_model=list[GalleryResponse])
 def get_images(
     category: str = None,
     db: Session = Depends(get_db),
@@ -78,30 +78,32 @@ def get_image(
     return image
 
 
-@adminGalleryRouter.post("/", response_model=GalleryResponse, status_code=201)
+@adminGalleryRouter.post("", response_model=GalleryResponse, status_code=201)
 def add_image(
-    category_id: int = Form(...),
+    category: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
 ):
     if image.content_type not in ALLOWED_TYPES:
-        raise HTTPException(status_code=400, detail="Invalid file type. Only JPEG, PNG, WEBP allowed")
+        raise HTTPException(status_code=400, detail="Invalid file type")
 
     image_url = CloudinaryHelper.upload_image(image.file, folder="fandf/gallery")
 
+    # look up or create the category by name
+    from services.gallery_service import get_or_create_category
+    cat = get_or_create_category(db, label=category, filter_key=category.lower().replace(" ", "_"))
+
     from schemas.content_schemas import GalleryCreate
-    data = GalleryCreate(
-        image_url=image_url,
-        category_id=category_id
-    )
+    data = GalleryCreate(image_url=image_url, category=cat.id)
     return create_image(db, data)
+
 
 
 @adminGalleryRouter.put("/{image_id}", response_model=GalleryResponse)
 def edit_image(
     image_id: int,
-    category_id: Optional[int] = Form(None),
+    category: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
@@ -113,20 +115,21 @@ def edit_image(
     image_url = existing.image_url
     if image and image.filename:
         if image.content_type not in ALLOWED_TYPES:
-            raise HTTPException(status_code=400, detail="Invalid file type. Only JPEG, PNG, WEBP allowed")
-        if existing.image_url:
-            old_public_id = CloudinaryHelper.extract_public_id(existing.image_url)
-            if old_public_id:
-                CloudinaryHelper.delete_image(old_public_id)
+            raise HTTPException(status_code=400, detail="Invalid file type")
+        old_public_id = CloudinaryHelper.extract_public_id(existing.image_url)
+        if old_public_id:
+            CloudinaryHelper.delete_image(old_public_id)
         image_url = CloudinaryHelper.upload_image(image.file, folder="fandf/gallery")
 
+    category_id = existing.category_id
+    if category:
+        from services.gallery_service import get_or_create_category
+        cat = get_or_create_category(db, label=category, filter_key=category.lower().replace(" ", "_"))
+        category= cat.id
+
     from schemas.content_schemas import GalleryUpdate
-    data = GalleryUpdate(
-        image_url=image_url,
-        category_id=category_id
-    )
-    updated = update_image(db, image_id, data)
-    return updated
+    data = GalleryUpdate(image_url=image_url, category=category_id)
+    return update_image(db, image_id, data)
 
 
 @adminGalleryRouter.delete("/{image_id}", status_code=204)

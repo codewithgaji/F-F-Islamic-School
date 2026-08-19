@@ -36,20 +36,20 @@ class HeroSlideResponse(HeroSlideBase):
 class FacilityCreate(BaseModel):
   icon_name: str
   title: str
-  descriptions: str
+  description: str
 
 
 class FacilityUpdate(BaseModel):
   icon_name: Optional[str] = None
   title: Optional[str] = None
-  descriptions: Optional[str] = None  
+  description: Optional[str] = None  
 
 
 class FacilityResponse(BaseModel):
   id: int
   icon_name: str
   title: str
-  descriptions: str
+  description: str
 
   model_config = ConfigDict(
     from_attributes = True
@@ -200,12 +200,12 @@ class GalleryCategoryResponse(BaseModel):
 
 class GalleryCreate(BaseModel):
   image_url: str
-  category_id: int
+  category: int
 
 class GalleryResponse(BaseModel):
   id: int
   image_url: str
-  category_id: int
+  category: int
 
   model_config = ConfigDict(
     from_attributes = True

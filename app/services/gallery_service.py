@@ -21,7 +21,7 @@ def get_image_by_id(db: Session, image_id: int):
 def create_image(db: Session, data: GalleryCreate):
     image = GalleryModel(
         image_url=data.image_url,
-        category=data.category_id
+        category=data.category
     )
     db.add(image)
     db.commit()
@@ -73,4 +73,16 @@ def delete_category(db: Session, category_id: int):
         return None
     db.delete(category)
     db.commit()
+    return category
+
+
+def get_or_create_category(db: Session, label: str, filter_key: str):
+    category = db.query(GalleryCategoryModel).filter(
+        GalleryCategoryModel.filter_key == filter_key
+    ).first()
+    if not category:
+        category = GalleryCategoryModel(label=label, filter_key=filter_key)
+        db.add(category)
+        db.commit()
+        db.refresh(category)
     return category
