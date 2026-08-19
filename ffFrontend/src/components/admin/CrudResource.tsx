@@ -22,6 +22,7 @@ interface Props<T extends { id: number }> {
   publicEndpoint?: string;
   fields: FieldDef[];
   columns: { key: keyof T | string; label: string; render?: (row: T) => React.ReactNode }[];
+  onMutateSuccess?: () => void;
 }
 
 export function CrudResource<T extends { id: number; [k: string]: unknown }>({
@@ -30,6 +31,7 @@ export function CrudResource<T extends { id: number; [k: string]: unknown }>({
   publicEndpoint,
   fields,
   columns,
+  onMutateSuccess,
 }: Props<T>) {
   const qc = useQueryClient();
   const listKey = ["admin-list", endpoint];
@@ -97,6 +99,7 @@ export function CrudResource<T extends { id: number; [k: string]: unknown }>({
       toast.success("Saved");
       setOpen(false);
       qc.invalidateQueries({ queryKey: listKey });
+      onMutateSuccess?.();
     },
     onError: () => toast.error("Save failed"),
   });
@@ -106,6 +109,7 @@ export function CrudResource<T extends { id: number; [k: string]: unknown }>({
     onSuccess: () => {
       toast.success("Deleted");
       qc.invalidateQueries({ queryKey: listKey });
+      onMutateSuccess?.();
     },
     onError: () => toast.error("Delete failed"),
   });
