@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Star } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -51,9 +51,11 @@ export const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex items-center gap-2 group">
-          <span className="grid place-items-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-soft">
-            <Star className="w-5 h-5" />
-          </span>
+          <img
+            src="/fandf.png"
+            alt="F&F Islamic Super Kiddies Centre"
+            className="w-10 h-10 rounded-full object-cover shadow-soft"
+          />
           <span className="hidden sm:flex flex-col leading-tight">
             <span className="font-display font-bold text-base text-foreground">F&amp;F Islamic</span>
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Super Kiddies Centre</span>
