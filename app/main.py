@@ -106,7 +106,7 @@ app.include_router(adminStatsRouter, prefix="/admin/stats", tags=["Admin - Stats
 @app.get("/")
 def fandfbackend():
     return {
-        "F And F Backend is Officially active 😊"
+        "Message": "F And F Backend is Officially active 😊"
     }
 
 
