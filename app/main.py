@@ -44,6 +44,9 @@ app = FastAPI(
 )
 
 
+os.makedirs("static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:8080")
 ALLOWED_ORIGINS = [origin.strip() for origin in FRONTEND_URL.split(",") if origin.strip()]
 
