@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from sqlalchemy import text
 from core.init_db import lifespan
@@ -41,8 +43,9 @@ app = FastAPI(
     # redirect_slashes=False
 )
 
-# origins_raw = os.getenv("ALLOWED_ORIGINS", "http://localhost:8080")
-# ALLOWED_ORIGINS = [o.strip() for o in origins_raw.split(",")]
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:8080")
+ALLOWED_ORIGINS = [origin.strip() for origin in FRONTEND_URL.split(",") if origin.strip()]
 
 # This it to Block X-CrossSite scripting.
 @app.middleware("http")
@@ -60,7 +63,7 @@ async def add_security_headers(request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"], 
